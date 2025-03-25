@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("com.smartfarm.chameleon_house.domain.*.dao")
+@MapperScan("com.smartfram.chameleon_house.domain.*.dao")
 public class ChameleonHouseApplication {
 
 	public static void main(String[] args) {
