@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smartfram.chameleon_house.domain.weather.dao.WeatherMapper">
+
+    <insert id="insert_weather_data"
+        parameterType="java.util.List">
+
+        INSERT INTO weather (weather_date, weather_time, 
+                weather_tem, weather_hum, weather_wind, weather_status)
+
+        VALUES 
+            <foreach collection='weatherDataList' item='weather' separator=','>
+                (#{weather.weather_date}, #{weather.weather_time}, 
+                    #{weather.weather_tem}, #{weather.weather_hum}, #{weather.weather_wind}, #{weather.weather_status})
+            </foreach>
+
+    </insert>    
+
+</mapper>

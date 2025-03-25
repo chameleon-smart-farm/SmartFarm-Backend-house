@@ -1,0 +1,26 @@
+package com.smartfram.chameleon_house.domain.weather.api;
+
+import org.springframework.web.bind.annotation.RestController;
+
+import com.smartfram.chameleon_house.domain.weather.application.WeatherService;
+
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Slf4j
+@RestController
+public class WeatherController {
+
+    @Autowired
+    private WeatherService weatherService;
+
+    
+    @GetMapping("/weather_info")
+    public void save_weather_info() {
+        weatherService.save_weather_info();
+    }
+    
+    
+}
