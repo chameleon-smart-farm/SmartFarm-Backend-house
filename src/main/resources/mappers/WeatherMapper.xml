@@ -3,7 +3,19 @@
 
 <mapper namespace="com.smartfram.chameleon_house.domain.weather.dao.WeatherMapper">
 
-    <insert id="insert_weather_data"
+
+    <!-- DB의 기상청 데이터 가져오기 -->
+    <select id="read_weather_data"
+        resultType = "com.smartfram.chameleon_house.domain.weather.dto.WeatherDataDTO">
+
+        SELECT  *
+        FROM    weather
+        WHERE   weather_date = #{cur_date} AND weather_time = #{cur_time}
+
+    </select>
+
+    <!-- DB에 기상청 데이터 저장 -->
+    <insert id="create_weather_data"
         parameterType="java.util.List">
 
         INSERT INTO weather (weather_date, weather_time, 
@@ -15,6 +27,6 @@
                     #{weather.weather_tem}, #{weather.weather_hum}, #{weather.weather_wind}, #{weather.weather_status})
             </foreach>
 
-    </insert>    
+    </insert> 
 
 </mapper>

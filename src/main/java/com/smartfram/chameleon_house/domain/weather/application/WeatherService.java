@@ -5,6 +5,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +34,21 @@ public class WeatherService {
 
     @Autowired(required=true)
     private WeatherMapper weatherMapper;
+
+    public WeatherDataDTO get_weather_info() {
+
+        // 현재 시각
+        LocalDateTime now = LocalDateTime.now();
+
+        // yynndd, hhmm 형식으로 변환
+        String cur_date = now.format(DateTimeFormatter.ofPattern("yyMMdd"));
+        String cur_time = now.format(DateTimeFormatter.ofPattern("HH"));
+
+        log.info("현재 일자 : " + cur_date + "현재 시간 : " + cur_time);
+
+
+        return weatherMapper.read_weather_data(cur_date, cur_time+"00");
+    }
 
 
     /**
@@ -226,7 +243,7 @@ public class WeatherService {
         weatherDataList.remove(weatherDataList.size() - 1);
 
         // 데이터베이스에 값 저장
-        weatherMapper.insert_weather_data(weatherDataList);
+        weatherMapper.create_weather_data(weatherDataList);
     }
     
 }
