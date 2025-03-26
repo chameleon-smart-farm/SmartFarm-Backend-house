@@ -19,7 +19,7 @@ public class WeatherController {
     
     @GetMapping("/weather_info")
     public void save_weather_info() {
-        weatherService.save_weather_info();
+        // weatherService.save_weather_info();
     }
     
     
