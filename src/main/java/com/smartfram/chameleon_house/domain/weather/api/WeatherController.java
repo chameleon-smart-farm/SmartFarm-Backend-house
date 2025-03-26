@@ -3,10 +3,13 @@ package com.smartfram.chameleon_house.domain.weather.api;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.smartfram.chameleon_house.domain.weather.application.WeatherService;
+import com.smartfram.chameleon_house.domain.weather.dto.WeatherDataDTO;
 
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Slf4j
@@ -17,9 +20,11 @@ public class WeatherController {
     private WeatherService weatherService;
 
     
-    @GetMapping("/weather_info")
-    public void save_weather_info() {
+    @GetMapping("/get_weather_info")
+    public ResponseEntity<WeatherDataDTO> get_weather_info() {
         // weatherService.save_weather_info();
+
+        return new ResponseEntity<>(weatherService.get_weather_info(), HttpStatus.OK);
     }
     
     
