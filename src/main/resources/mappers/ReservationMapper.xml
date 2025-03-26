@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.smartfram.chameleon_house.domain.reservation.dao.ReservationMapper">
+
+    <!-- 예약 정보 리스트 조회 -->
+    <select id="read_reservation_list"
+        resultType="com.smartfram.chameleon_house.domain.reservation.dto.ReservationDTO">
+
+            SELECT *
+            FROM    reservation
+
+    </select>
+
+    <!-- 예약 정보 단일 조회 -->
+    <select id="read_reservation"
+        parameterType="java.lang.Integer"
+        resultType="com.smartfram.chameleon_house.domain.reservation.dto.ReservationDTO">
+
+        SELECT  *
+        FROM    reservation
+        WHERE   reservation_id = #{ reservation_id }
+
+    </select>
+
+    <!-- 예약 정보 DB에 저장 -->
+    <insert id="create_reservation"
+        parameterType="com.smartfram.chameleon_house.domain.reservation.dto.ReservationDTO">
+
+        INSERT INTO reservation (reservation_hour, reservation_min, reservation_day)
+        VALUES                  (#{reservation_hour}, #{reservation_min}, #{reservation_day})
+
+    </insert>
+
+    <!-- 예약 정보 업데이트 -->
+    <update id="update_reservation"
+        parameterType="com.smartfram.chameleon_house.domain.reservation.dto.ReservationDTO">
+
+        UPDATE reservation
+        SET 
+            reservation_hour = #{reservation_hour},
+            reservation_min = #{reservation_min},
+            reservation_day = #{reservation_day}
+        WHERE reservation_id = #{reservation_id}
+
+    </update>
+
+    <!-- 예약 정보 삭제 -->
+    <delete id="delete_reservation"
+        parameterType="java.lang.Integer">
+
+        DELETE FROM reservation
+        WHERE reservation_id = #{reservation_id}
+
+    </delete>
+
+</mapper>
