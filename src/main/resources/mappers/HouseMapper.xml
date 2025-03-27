@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.smartfram.chameleon_house.domain.house.dao.HouseMapper">
+
+    <!-- 농장 정보 조회 -->
+    <select id="read_house"
+        resultType="com.smartfram.chameleon_house.domain.house.dto.HouseDTO">
+
+        SELECT  house_id, house_crop, house_add
+        FROM    house
+
+    </select>
+
+    <!-- 농장 정보 수정 -->
+    <update id="update_house"
+        parameterType="com.smartfram.chameleon_house.domain.house.dto.HouseDTO" >
+
+        UPDATE  house
+        SET     
+            house_crop = #{ house_crop }
+        WHERE house_id = #{ house_id }
+
+
+    </update>
+
+</mapper>
