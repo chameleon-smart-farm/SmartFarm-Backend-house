@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
@@ -49,7 +50,7 @@ public class ReservationController {
     // 예약 정보 DB에 저장
     @PostMapping("/insert")
     @Operation(summary = "예약 정보 입력" , description = "예약 정보를 DB에 저장하는 API")
-    public void create_reservation(ReservationDTO reservationDTO){
+    public void create_reservation( @RequestBody ReservationDTO reservationDTO){
         log.info("Reservation Controller : 예약 정보 DB에 저장");
         reservationService.create_reservation(reservationDTO);
     }
@@ -57,15 +58,15 @@ public class ReservationController {
     // 예약 정보 업데이트
     @PutMapping("/update")
     @Operation(summary = "예약 정보 수정" , description = "예약 정보를 수정하는 API")
-    public void update_reservation(ReservationDTO reservationDTO){
+    public void update_reservation( @RequestBody ReservationDTO reservationDTO){
         log.info("Reservation Controller : 예약 정보 업데이트");
         reservationService.update_reservation(reservationDTO);
     }
     
     // 예약 정보 삭제
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete/{reservation_id}")
     @Operation(summary = "예약 정보 삭제" , description = "예약 정보를 삭제하는 API")
-    public void delete_reservation(int reservation_id){
+    public void delete_reservation(@PathVariable("reservation_id") int reservation_id){
         log.info("Reservation Controller : 예약 정보 삭제");
         reservationService.delete_reservation(reservation_id);
     }
