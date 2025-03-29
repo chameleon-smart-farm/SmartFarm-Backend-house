@@ -14,6 +14,7 @@ import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,7 +42,7 @@ public class WeatherService {
         LocalDateTime now = LocalDateTime.now();
 
         // yynndd, hhmm 형식으로 변환
-        String cur_date = now.format(DateTimeFormatter.ofPattern("yyMMdd"));
+        String cur_date = now.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
         String cur_time = now.format(DateTimeFormatter.ofPattern("HH"));
 
         log.info("현재 일자 : " + cur_date + "현재 시간 : " + cur_time);
@@ -57,6 +58,7 @@ public class WeatherService {
      *  공공 데이터 포털에 나와있는 샘플 코드 참조하였다.
      *  String 형태의 결과 값을 JsonNode 형태로 변환한다.
      */
+    @Transactional
     public void save_weather_info(String cur_date){
 
         try {
@@ -228,9 +230,21 @@ public class WeatherService {
         // List 객체
         List<WeatherDataDTO> weatherDataList = new ArrayList<>();
 
+        // 현재 일자에서 +2일
+        LocalDateTime three = LocalDateTime.now().plusDays(2);;
+
+        // yynndd, hhmm 형식으로 변환
+        String three_date = three.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+
         // List로 변환
         for (Map<String, WeatherDataDTO> timeMap : weatherDataMap.values()) {
             for (WeatherDataDTO weatherDTO : timeMap.values()) {
+  
+                // 현재 날짜보다 +2일일 경우 제외
+                if (weatherDTO.getWeather_date().compareTo(three_date) > 0) {
+                    continue; 
+                }
+
                 weatherDataList.add(weatherDTO);
             }
         }
@@ -239,11 +253,12 @@ public class WeatherService {
             log.info(data.toString());
         }
 
-        // 마지막 데이터 삭제
-        weatherDataList.remove(weatherDataList.size() - 1);
-
         // 데이터베이스에 값 저장
-        weatherMapper.create_weather_data(weatherDataList);
+        try {
+            weatherMapper.create_weather_data(weatherDataList);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
     }
     
 }

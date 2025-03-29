@@ -22,7 +22,7 @@
                 weather_tem, weather_hum, weather_wind, weather_status)
 
         VALUES 
-            <foreach collection='weatherDataList' item='weather' separator=','>
+            <foreach collection='list' item='weather' separator=','>
                 (#{weather.weather_date}, #{weather.weather_time}, 
                     #{weather.weather_tem}, #{weather.weather_hum}, #{weather.weather_wind}, #{weather.weather_status})
             </foreach>
