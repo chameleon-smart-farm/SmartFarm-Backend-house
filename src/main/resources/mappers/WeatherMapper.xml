@@ -19,12 +19,12 @@
         parameterType="java.util.List">
 
         INSERT INTO weather (weather_date, weather_time, 
-                weather_tem, weather_hum, weather_wind, weather_status)
+                weather_tem, weather_hum, weather_wind, weather_status, weather_preci)
 
         VALUES 
             <foreach collection='list' item='weather' separator=','>
                 (#{weather.weather_date}, #{weather.weather_time}, 
-                    #{weather.weather_tem}, #{weather.weather_hum}, #{weather.weather_wind}, #{weather.weather_status})
+                    #{weather.weather_tem}, #{weather.weather_hum}, #{weather.weather_wind}, #{weather.weather_status}, #{weather.weather_preci})
             </foreach>
 
     </insert> 
