@@ -49,5 +49,10 @@ public class HouseStatusService {
     public void set_tem_avg(TemAvgDTO tem_avg){
         houseStatusMapper.set_tem_avg(tem_avg);
     }
+
+    // PLC 호출 - 온도 데이터를 저장
+    public void set_tem(TemDTO tem){
+        houseStatusMapper.set_tem(tem);
+    }
     
 }

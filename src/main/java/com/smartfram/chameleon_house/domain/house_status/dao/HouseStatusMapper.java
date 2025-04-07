@@ -22,5 +22,8 @@ public interface HouseStatusMapper {
 
     // 계산한 평균 온도 데이터값을 DB에 저장
     public void set_tem_avg(TemAvgDTO tem_avg);
+
+    // PLC 호출 - 온도 데이터를 저장
+    public void set_tem(TemDTO tem);
     
 }
