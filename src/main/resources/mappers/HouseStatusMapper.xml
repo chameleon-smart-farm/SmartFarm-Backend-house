@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.smartfram.chameleon_house.domain.house_status.dao.HouseStatusMapper">
+
+    <!-- 가장 최근에 저장된 온도 데이터 -->
+    <select id="get_recent_tem"
+        resultType="com.smartfram.chameleon_house.domain.house_status.dto.TemDTO" >
+
+        SELECT  *
+        FROM    tem
+        ORDER BY tem_id DESC
+        LIMIT   1;
+
+    </select>
+
+    <!-- 가장 최근 3시간의 평균 온도 데이터 -->
+    <select id="get_tem_avg_list"
+        resultType="com.smartfram.chameleon_house.domain.house_status.dto.TemAvgDTO">
+
+        SELECT  *
+        FROM    tem_avg
+        ORDER BY tem_avg_id DESC
+        LIMIT   3;
+
+    </select>
+
+    <select id="get_tem_list"
+        resultType="com.smartfram.chameleon_house.domain.house_status.dto.TemDTO">
+
+        SELECT  *
+        FROM    tem
+        WHERE   EXTRACT(HOUR FROM tem_day_time) = #{cur_time};
+
+
+    </select>
+
+    <!-- 계산한 평균 온도 데이터값을 DB에 저장 -->
+    <insert id="set_tem_avg"
+        parameterType="com.smartfram.chameleon_house.domain.house_status.dto.TemAvgDTO">
+
+        INSERT INTO tem_avg(tem_avg_fin_time, tem_avg_data)
+        VALUES  (#{tem_avg_fin_time}, #{tem_avg_data});
+
+    </insert>
+
+
+</mapper>
