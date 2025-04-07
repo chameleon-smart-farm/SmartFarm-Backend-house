@@ -25,6 +25,7 @@
 
     </select>
 
+    <!-- 해당 시간의 -1값에 해당하는 온도 데이터들을 반환 -->
     <select id="get_tem_list"
         resultType="com.smartfram.chameleon_house.domain.house_status.dto.TemDTO">
 
@@ -41,6 +42,14 @@
 
         INSERT INTO tem_avg(tem_avg_fin_time, tem_avg_data)
         VALUES  (#{tem_avg_fin_time}, #{tem_avg_data});
+
+    </insert>
+
+    <insert id="set_tem"
+        parameterType="com.smartfram.chameleon_house.domain.house_status.dto.TemDTO">
+
+        INSERT INTO tem(tem_data)
+        VALUES  (#{tem_data});
 
     </insert>
 
