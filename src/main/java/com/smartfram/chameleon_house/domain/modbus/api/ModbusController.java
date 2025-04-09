@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.smartfram.chameleon_house.domain.house_status.dto.TemDTO;
 import com.smartfram.chameleon_house.domain.modbus.application.ModbusService;
+import com.smartfram.chameleon_house.domain.reservation.dto.ReservationDTO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,5 +30,12 @@ public class ModbusController {
     public void set_tem(@RequestBody TemDTO tem) {
         modbusService.set_tem(tem);
     }
+
+    @PostMapping("/insert_reservation")
+    @Operation(summary = "예약 데이터 저장", description = "PLC에서 전달한 예약 데이터를 DB에 저장하는 API")
+    public void set_reservation(@RequestBody ReservationDTO reservation) {
+        modbusService.set_reservation(reservation);
+    }
+    
     
 }
