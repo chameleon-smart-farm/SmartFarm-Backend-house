@@ -18,8 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.smartfram.chameleon_house.domain.weather.dao.WeatherMapper;
 import com.smartfram.chameleon_house.domain.weather.dto.WeatherDataDTO;
+import com.smartfram.chameleon_house.global.elastic_search.Weather.WeatherDocument;
+import com.smartfram.chameleon_house.global.elastic_search.Weather.WeatherElasticRepository;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,21 +35,22 @@ public class WeatherService {
     private String str_result;
 
     @Autowired(required=true)
-    private WeatherMapper weatherMapper;
+    private WeatherElasticRepository weatherElasticRepository;
 
-    public WeatherDataDTO get_weather_info() {
+    public WeatherDocument get_weather_info() {
 
         // 현재 시각
         LocalDateTime now = LocalDateTime.now();
 
         // yynndd, hhmm 형식으로 변환
         String cur_date = now.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-        String cur_time = now.format(DateTimeFormatter.ofPattern("HH"));
+        String cur_time = now.format(DateTimeFormatter.ofPattern("HH")) + "00";
 
         log.info("현재 일자 : " + cur_date + "현재 시간 : " + cur_time);
 
-
-        return weatherMapper.read_weather_data(cur_date, cur_time+"00");
+        WeatherDocument docresult = weatherElasticRepository.findByWeatherDateAndWeatherTime(cur_date, cur_time).get();
+        
+        return docresult;
     }
 
 
@@ -228,7 +230,8 @@ public class WeatherService {
      */
     public void insert_weather_data(Map<String, TreeMap<String, WeatherDataDTO>> weatherDataMap){
         // List 객체
-        List<WeatherDataDTO> weatherDataList = new ArrayList<>();
+        // List<WeatherDataDTO> weatherDataList = new ArrayList<>();
+        List<WeatherDocument> weatherDataList = new ArrayList<>();
 
         // 현재 일자에서 +2일
         LocalDateTime three = LocalDateTime.now().plusDays(2);;
@@ -245,17 +248,28 @@ public class WeatherService {
                     continue; 
                 }
 
-                weatherDataList.add(weatherDTO);
+                WeatherDocument weatherDocument = new WeatherDocument();
+
+                weatherDocument.setWeatherHum(weatherDTO.getWeather_hum());
+                weatherDocument.setWeatherStatus(weatherDTO.getWeather_status());
+                weatherDocument.setWeatherPreci(weatherDTO.getWeather_preci());
+                weatherDocument.setWeatherTem(weatherDTO.getWeather_tem());
+                weatherDocument.setWeatherWind(weatherDTO.getWeather_wind());
+                weatherDocument.setWeatherDate(weatherDTO.getWeather_date());
+                weatherDocument.setWeatherTime(weatherDTO.getWeather_time());
+
+                weatherDataList.add(weatherDocument);
             }
         }
 
-        for (WeatherDataDTO data : weatherDataList){
+        for (WeatherDocument data : weatherDataList){
             log.info(data.toString());
         }
 
         // 데이터베이스에 값 저장
         try {
-            weatherMapper.create_weather_data(weatherDataList);
+            // weatherMapper.create_weather_data(weatherDataList);
+            weatherElasticRepository.saveAll(weatherDataList);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
