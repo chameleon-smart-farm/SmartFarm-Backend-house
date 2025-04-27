@@ -10,6 +10,7 @@ import com.smartfram.chameleon_house.domain.house_status.dto.TemAvgDTO;
 import com.smartfram.chameleon_house.domain.house_status.dto.TemDTO;
 import com.smartfram.chameleon_house.domain.weather.application.WeatherService;
 import com.smartfram.chameleon_house.domain.weather.dto.WeatherDataDTO;
+import com.smartfram.chameleon_house.global.elastic_search.Weather.WeatherDocument;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,8 +31,9 @@ public class HouseStatusService {
         TemDTO result = houseStatusMapper.get_recent_tem();
 
         // 기상청의 데이터
-        WeatherDataDTO weatherDataDTO = weatherService.get_weather_info();
-        result.setWeather_tem(Integer.parseInt(weatherDataDTO.getWeather_tem()));
+        // WeatherDataDTO weatherDataDTO = weatherService.get_weather_info();
+        WeatherDocument weatherDataDTO = weatherService.get_weather_info();
+        result.setWeather_tem(Integer.parseInt(weatherDataDTO.getWeatherTem()));
 
         // 가장 최근 3시간의 평균 온도 데이터
         List<TemAvgDTO> avg_list = houseStatusMapper.get_tem_avg_list();
